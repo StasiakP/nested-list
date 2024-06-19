@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: rgb(235, 235, 235);
+}
+
+.arrow-icon > svg {
+  transform: rotate(90deg);
+}
+
+.task-dot {
+  top: calc(50% - (0.75rem / 2));
+  left: calc(-0.75rem / 2);
+}

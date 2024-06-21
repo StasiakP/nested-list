@@ -1,10 +1,10 @@
-<ng-container *ngIf="tasksExpandable">
-  <div class="flex flex-row mx-4">
-    <div class="grow font-bold ml-28">NAME</div>
-    <div class="w-24 font-bold">START</div>
-    <div class="w-24 font-bold">END</div>
-    <div class="w-24 font-bold">PRIORITY</div>
-    <div class="w-24 font-bold">PROGRESS</div>
+<div class="flex flex-col flex-nowrap">
+  <div class="flex font-bold px-8">
+    <div class="flex flex-1 items-center font-bold min-w-[50%]">NAME</div>
+    <div class="flex flex-1 items-center font-bold">START</div>
+    <div class="flex flex-1 items-center font-bold">END</div>
+    <div class="flex flex-1 items-center font-bold">PRIORITY</div>
+    <div class="flex flex-1 items-center font-bold">PROGRESS</div>
   </div>
   <ng-container *ngFor="let task of tasksExpandable">
     <ng-container
@@ -13,30 +13,33 @@
     >
     </ng-container>
   </ng-container>
-</ng-container>
+</div>
 
 <ng-template #desktopTaskTile let-task="task" let-indentLevel="indentLevel">
-  <div
-    [class]="indentLevel === 2 ? 'ml-20' : indentLevel === 1 ? 'ml-12' : ''"
-    class="flex flex-row rounded-xl bg-white mb-2 relative mx-4 items-center"
-  >
-    <fa-icon
-      *ngIf="indentLevel"
-      [icon]="faArrowTurnUp"
-      class="text-red-800 mr-1 arrow-icon absolute -left-6"
-    ></fa-icon>
-    <div
-      class="rounded-full w-3 h-3 absolute task-dot"
-      [class]="
-        task.status === statusEnum.Done
-          ? 'bg-green-800'
-          : task.status === statusEnum.InProgress
-            ? 'bg-red-800'
-            : 'bg-gray-400'
-      "
-    ></div>
-    <div class="grow flex py-3 px-6">
-      <div class="flex flex-col">
+  <div class="flex flex-row mb-2 relative mx-4">
+    <div class="flex flex-1 items-center min-w-[50%]">
+      <div class="relative">
+        <fa-icon
+          *ngIf="indentLevel"
+          [icon]="faArrowTurnUp"
+          [class]="
+            indentLevel === 2 ? 'ml-20' : indentLevel === 1 ? 'ml-12' : ''
+          "
+          class="text-red-800 mr-3 arrow-icon"
+        ></fa-icon>
+        <div
+          class="rounded-full w-3 h-3 absolute task-dot"
+          [class]="
+            task.status === statusEnum.Done
+              ? 'bg-green-800'
+              : task.status === statusEnum.InProgress
+                ? 'bg-red-800'
+                : 'bg-gray-400'
+          "
+        ></div>
+      </div>
+
+      <div class="flex flex-1 flex-col bg-white rounded-l-xl pl-4">
         <span class="font-semibold">{{ task.name }}</span>
         <div class="text-xs min-h-7 flex items-center">
           {{ task.taskNumber }}
@@ -54,15 +57,15 @@
         </div>
       </div>
     </div>
-    <div class="w-24 flex items-center">
+    <div class="flex flex-1 items-center bg-white">
       <fa-icon [icon]="faCalendar" class="text-gray-400 mr-1"></fa-icon
       >{{ task.startDate | dateFormatter }}
     </div>
-    <div class="w-24 flex items-center">
+    <div class="flex flex-1 items-center bg-white">
       <fa-icon [icon]="faCalendar" class="text-gray-400 mr-1"></fa-icon
       >{{ task.endDate | dateFormatter }}
     </div>
-    <div class="w-24 flex items-center">
+    <div class="flex flex-1 items-center bg-white">
       <fa-icon
         [icon]="faFlag"
         class="mr-1"
@@ -76,7 +79,7 @@
       ></fa-icon
       ><span class="font-semibold">{{ task.priority }}</span>
     </div>
-    <div class="w-24 flex items-center">
+    <div class="flex flex-1 items-center bg-white rounded-r-xl">
       <fa-icon [icon]="faSignal" class="text-gray-400 mr-1"></fa-icon
       >{{ task.percentageOfProgress + "%" }}
     </div>

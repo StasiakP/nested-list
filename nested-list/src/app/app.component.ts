@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import tasksJson from '../assets/data.json';
 import { Task, TaskExpandable } from 'src/interfaces/task';
 import {
@@ -16,6 +16,15 @@ import { StatusEnum } from './enums/statusEnum';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  @HostListener('window:resize', ['$event'])
+  @HostListener('window:load', ['$event'])
+  onResize(event: any) {
+    const windowsSize = event.target.innerWidth ?? window.innerWidth;
+    this.isMobile = windowsSize <= 768;
+  }
+
+  isMobile = false;
+
   title = 'nested-list';
   tasks: Task[] = tasksJson;
   tasksExpandable: TaskExpandable[] = [];

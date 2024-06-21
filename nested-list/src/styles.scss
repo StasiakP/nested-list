@@ -14,3 +14,9 @@ body {
   top: calc(50% - (0.75rem / 2));
   right: calc(-0.75rem / 2);
 }
+
+@media (max-width: 768px) {
+  .task-dot {
+    left: -1.375rem;
+  }
+}

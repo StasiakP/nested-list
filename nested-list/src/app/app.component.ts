@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import tasksJson from '../assets/data.json';
-import { Task } from 'src/interfaces/task';
+import { Task, TaskExpandable } from 'src/interfaces/task';
 import {
   faArrowTurnUp,
   faCalendar,
@@ -18,6 +18,7 @@ import { StatusEnum } from './enums/statusEnum';
 export class AppComponent implements OnInit {
   title = 'nested-list';
   tasks: Task[] = tasksJson;
+  tasksExpandable: TaskExpandable[] = [];
 
   priorityEnum = PriorityEnum;
   statusEnum = StatusEnum;
@@ -28,8 +29,62 @@ export class AppComponent implements OnInit {
   faArrowTurnUp = faArrowTurnUp;
 
   ngOnInit() {
-    console.log('Data', this.tasks);
-    const tasks = this.tasks as Task[];
-    console.log('Tasks', tasks);
+    this.tasksExpandable = this.tasks.map((task) => ({
+      ...this.mapTaskToTaskExpandable(task),
+    }));
+  }
+
+  public toggleRowVisibility(id: string) {
+    function hideSubChildren(taskList: TaskExpandable[]) {
+      taskList.forEach((childTask) => {
+        childTask.isExpanded = false;
+        if (childTask.childTasks && childTask.childTasks.length > 0) {
+          hideSubChildren(childTask.childTasks);
+        }
+      });
+    }
+    const task = this.find(id);
+    if (task) {
+      if (task.isExpanded) {
+        task.isExpanded = false;
+        if (task.childTasks && task.childTasks.length > 0) {
+          hideSubChildren(task.childTasks);
+        }
+      } else {
+        task.isExpanded = true;
+      }
+    }
+  }
+
+  private mapTaskToTaskExpandable(task: Task): TaskExpandable {
+    return {
+      id: task.id,
+      taskNumber: task.taskNumber,
+      name: task.name,
+      description: task.description,
+      status: task.status,
+      priority: task.priority,
+      percentageOfProgress: task.percentageOfProgress,
+      startDate: task.startDate,
+      endDate: task.endDate,
+      childTasks: task.childTasks.length
+        ? task.childTasks.map((child) => this.mapTaskToTaskExpandable(child))
+        : [],
+      isExpanded: true,
+    };
+  }
+
+  private find(id: string): TaskExpandable | undefined {
+    function iterate(task: TaskExpandable) {
+      if (task.id === id) {
+        result = task;
+        return true;
+      }
+      return task.childTasks && task.childTasks.some(iterate);
+    }
+
+    let result;
+    this.tasksExpandable.some(iterate);
+    return result;
   }
 }

@@ -23,19 +23,15 @@ export class AppComponent implements OnInit {
     this.isMobile = windowsSize <= 768;
   }
 
-  isMobile = false;
-
-  title = 'nested-list';
-  tasks: Task[] = tasksJson;
-  tasksExpandable: TaskExpandable[] = [];
-
-  priorityEnum = PriorityEnum;
-  statusEnum = StatusEnum;
-
-  faCalendar = faCalendar;
-  faFlag = faFlag;
-  faSignal = faSignal;
-  faArrowTurnUp = faArrowTurnUp;
+  public isMobile = false;
+  public tasks: Task[] = tasksJson;
+  public tasksExpandable: TaskExpandable[] = [];
+  public priorityEnum = PriorityEnum;
+  public statusEnum = StatusEnum;
+  public faCalendar = faCalendar;
+  public faFlag = faFlag;
+  public faSignal = faSignal;
+  public faArrowTurnUp = faArrowTurnUp;
 
   ngOnInit() {
     this.tasksExpandable = this.tasks.map((task) => ({
@@ -43,7 +39,7 @@ export class AppComponent implements OnInit {
     }));
   }
 
-  public toggleRowVisibility(id: string) {
+  public toggleIsExpanded(id: string): void {
     function hideSubChildren(taskList: TaskExpandable[]) {
       taskList.forEach((childTask) => {
         childTask.isExpanded = false;
@@ -52,7 +48,7 @@ export class AppComponent implements OnInit {
         }
       });
     }
-    const task = this.find(id);
+    const task = this.findTaskById(id);
     if (task) {
       if (task.isExpanded) {
         task.isExpanded = false;
@@ -83,7 +79,7 @@ export class AppComponent implements OnInit {
     };
   }
 
-  private find(id: string): TaskExpandable | undefined {
+  private findTaskById(id: string): TaskExpandable | undefined {
     function iterate(task: TaskExpandable) {
       if (task.id === id) {
         result = task;
